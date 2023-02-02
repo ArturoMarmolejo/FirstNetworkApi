@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FirstNetworkApi</string>
+    <string name="school_name">SCHOOL NAME</string>
+    <string name="address">ADDRESS</string>
+    <string name="phone_number">PHONE NUMBER</string>
+    <string name="more">MORE</string>
+    <string name="someOtherString">Other</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
