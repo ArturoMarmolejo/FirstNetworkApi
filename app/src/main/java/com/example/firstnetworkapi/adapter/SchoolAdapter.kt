@@ -1,5 +1,7 @@
 package com.example.firstnetworkapi.adapter
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +12,6 @@ import com.example.firstnetworkapi.model.SchoolsItem
 
 class SchoolAdapter(
     private val schoolSet: MutableList<ViewType> = mutableListOf(),
-    private val satScoresSet: List<ViewType> = List(),
     private val onClickedSchool: (SchoolsItem) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -23,10 +24,6 @@ class SchoolAdapter(
                 tempChar = firstLetter
             }
             schoolSet.add(ViewType.SCHOOL(school))
-        }
-
-        fun displaySatScores(satScores: List<SatScoresItem>) {
-
         }
 
         notifyDataSetChanged()
@@ -60,9 +57,10 @@ class SchoolAdapter(
             is ViewType.LETTER -> {
                 (holder as LetterViewHolder).bindLetter(item.letter)
             }
-            is ViewType.SATSCORE -> {
-                (holder as)
-            }
+//            is ViewType.SATSCORE -> {
+//                (holder as)
+//            }
+            else -> Log.d("TAG", "onBindViewHolder: ")
         }
     }
 
@@ -74,6 +72,11 @@ class SchoolAdapter(
             is ViewType.LETTER -> 0
             else -> 2
         }
+    }
+
+    fun setFilterList(filteredList: List<SchoolsItem>) {
+        schoolSet.clear()
+        updateSchools(filteredList)
     }
 }
 
@@ -99,10 +102,4 @@ class LetterViewHolder(
     fun bindLetter(letter: String) {
         binding.letterName.text = letter
     }
-}
-
-class SatScoreViewHolder(
-    private val binding:
-): {
-
 }

@@ -1,6 +1,8 @@
 package com.example.firstnetworkapi.di
 
 import com.example.firstnetworkapi.rest.ServiceApi
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -8,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -18,10 +21,16 @@ class NetworkModule {
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(ServiceApi.BASE_URL)
-            .addConverterFactory(MoshiConverterFactor.create())
+            .addConverterFactory(MoshiConverterFactory.create())
             .client(okHttpClient)
             .build()
     }
+
+    @Provides
+    fun providesMoshi(): Moshi =
+        Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
 
 
     @Provides

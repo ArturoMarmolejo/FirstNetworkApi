@@ -7,10 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firstnetworkapi.model.SchoolsItem
 import com.example.firstnetworkapi.rest.SchoolRepository
-import com.example.firstnetworkapi.rest.ServiceApi
-import com.example.firstnetworkapi.view.UIState
+import com.example.firstnetworkapi.views.UIState
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
 private const val TAG = "SchoolsViewModel"
@@ -20,7 +18,7 @@ class SchoolsViewModel(
     private val ioDispatcher :CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     init {
-
+        getSchools()
     }
 
     var fragmentState: Boolean = false
@@ -30,26 +28,24 @@ class SchoolsViewModel(
     private val _satScores: MutableLiveData<UIState> = MutableLiveData(UIState.LOADING)
     val satScores: LiveData<UIState> get() = _satScores
 
-    fun getAllSchools(): List<SchoolsItem> {
-        viewModelScope.launch(ioDispatcher) { //Clashing for main thread supervision
-            _schools.postValue(UIState.LOADING).let {
-                        //this post value only works in the main thread and worker therad
-                        _schools.postValue(SchoolRepository.getAllSchools() as UIState)
-                        withContext(Dispatchers.Main) {
-                            //this set value only works in the mean thread
-                            _schools.value = UIState.SUCCESS_SCHOOLSITEM(getAllSchools())
-                            Log.d("onCreate", "getAllSchools: $it ")
-                            return@withContext;
-                        }
-                    }
-                } else {
-                    throw Exception(response.errorBody()?.string())
+    fun getSchools(dbn: String? = null) {
+        dbn?.let { item ->
+            Log.d(TAG, "getSchools: ENTERED IN getSchools(${item})")
+         viewModelScope.launch(ioDispatcher) {
+             SchoolRepository.getSatScore(item).collect{
+                 _schools.postValue(it)
+             }
+         }
+        } ?: run {
+            viewModelScope.launch(ioDispatcher) {
+                SchoolRepository.getAllSchools().collect {
+                    Log.d(TAG, "getSchools: UIState collected ${it}")
+                    _schools.postValue(it)
                 }
-
-
+            }
         }
-        return emptyList()
     }
+
 
 
 

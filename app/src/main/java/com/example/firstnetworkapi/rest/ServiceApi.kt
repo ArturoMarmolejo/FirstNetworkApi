@@ -6,6 +6,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ServiceApi {
 
@@ -17,7 +18,7 @@ interface ServiceApi {
 
     @GET(SAT_SCORES)
     suspend fun getSatScoresAsync(
-        @Path("dbn") dbn: String
+        @Query("dbn") dbn: String
     ): Deferred<Response<List<SatScoresItem>>>
 
 
@@ -31,6 +32,6 @@ interface ServiceApi {
         private const val DBN = "dbn"
         const val BASE_URL = "https://data.cityofnewyork.us/resource/"
         const val SCHOOL_PATH = "s3k6-pzi2.json"
-        const val SAT_SCORES = "f9bf-2cp4.json?dbn=${DBN}"
+        const val SAT_SCORES = "f9bf-2cp4.json"
     }
 }

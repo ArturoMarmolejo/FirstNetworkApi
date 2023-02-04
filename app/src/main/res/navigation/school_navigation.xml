@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/SchoolsFragment"
-        android:name="com.example.firstnetworkapi.view.SchoolsFragment"
-        tools:layout="@layout/fragment_schools"
+        android:name="com.example.firstnetworkapi.views.SchoolDetailsFragment"
+        tools:layout="@layout/fragment_school_details"
         android:label="NYC Schools">
 
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/DetailsFragment"
-        android:name="com.example.firstnetworkapi.view.DetailsFragment"
+        android:name="com.example.firstnetworkapi.views.DetailsFragment"
         tools:layout="@layout/fragment_satscores"
         android:label="School Details">
 
