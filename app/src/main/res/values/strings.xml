@@ -7,4 +7,12 @@
     <string name="someOtherString">Other</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="writingavgscore">WritingAvgScore</string>
+    <string name="mathavgscore">MathAvgScore</string>
+    <string name="criticalreadingavgscore">CriticalReadingAvgScore</string>
+    <string name="satscoretesttakersnumber">SatScoreTestTakersNumber</string>
+    <string name="sat_score_test_takers_number">Sat Score Test Takers Number</string>
+    <string name="critical_reading_average_score">Critical Reading Average Score</string>
+    <string name="math_average_score">Math Average Score</string>
+    <string name="writing_average_score">Writing Average Score</string>
 </resources>

@@ -74,10 +74,6 @@ class SchoolAdapter(
         }
     }
 
-    fun setFilterList(filteredList: List<SchoolsItem>) {
-        schoolSet.clear()
-        updateSchools(filteredList)
-    }
 }
 
 class SchoolViewHolder(

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.firstnetworkapi.databinding.ActivityMainBinding
+import com.example.firstnetworkapi.di.SchoolsApp
 
 private const val TAG = "MainActivity"
 
@@ -15,10 +16,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =  ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        setContentView(R.layout.activity_main)
+        SchoolsApp.schoolsComponent.inject(this)
 
-        val navHost = supportFragmentManager.findFragmentById(R.id.frag_container) as NavHostFragment
-        setupActionBarWithNavController(navHost.navController)
+//        val navHost = supportFragmentManager.findFragmentById(R.id.frag_container) as NavHostFragment
+//        setupActionBarWithNavController(navHost.navController)
+
 
 
     }
@@ -27,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 //        //return findNavController()
 //    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        binding = null
+//    }
 }

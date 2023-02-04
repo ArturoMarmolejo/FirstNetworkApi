@@ -1,51 +1,43 @@
-package com.example.firstnetworkapi.view
+package com.example.firstnetworkapi.views
 
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstnetworkapi.R
 import com.example.firstnetworkapi.adapter.SchoolAdapter
-import com.example.firstnetworkapi.databinding.FragmentSchoolsBinding
-import com.example.firstnetworkapi.rest.Network
-import com.example.firstnetworkapi.viewmodel.SchoolsViewModel
+import com.example.firstnetworkapi.adapter.SchoolViewHolder
+import com.example.firstnetworkapi.databinding.FragmentSchoolListBinding
 
-class SchoolsFragment : Fragment() {
+import com.example.firstnetworkapi.model.SchoolsItem
+import com.example.firstnetworkapi.utils.BaseFragment
 
+class SchoolListFragment: BaseFragment() {
     private val binding by lazy {
-        FragmentSchoolsBinding.inflate(layoutInflater)
+        FragmentSchoolListBinding.inflate(layoutInflater)
     }
-
+    
     private val schoolAdapter by lazy {
-        SchoolAdapter {
+        SchoolAdapter{
+            Log.d(TAG, "SchoolAdapter on Clicked: it = ${it.dbn}")
+            schoolsViewModel.getSchools(it.dbn)
             findNavController().navigate(R.id.action_SchoolsFragment_to_DetailsFragment)
         }
     }
 
-    private val schoolsViewModel: SchoolsViewModel by activityViewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SchoolsViewModel(Network.serviceApi) as T
-            }
-        }
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
-        binding.schoolRv.apply {
+
+        binding.schoolRv.apply{
             layoutManager = LinearLayoutManager(
                 requireContext(),
                 LinearLayoutManager.VERTICAL,
@@ -55,19 +47,17 @@ class SchoolsFragment : Fragment() {
         }
 
         schoolsViewModel.schools.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UIState.LOADING -> {
-
-                }
-                is UIState.SUCCESS_SCHOOLSITEM -> {
-                    schoolAdapter.updateSchools(state.response)
+            when(state) {
+                is UIState.LOADING -> {}
+                is UIState.SUCCESS<*> -> {
+                    schoolAdapter.updateSchools(state.response as List<SchoolsItem>)
                 }
                 is UIState.ERROR -> {
                     AlertDialog.Builder(requireActivity())
                         .setTitle("Error occurred")
                         .setMessage(state.error.localizedMessage)
                         .setPositiveButton("RETRY") { dialog, _ ->
-                            schoolsViewModel.getAllSchools()
+                            schoolsViewModel.getSchools()
                             dialog.dismiss()
                         }
                         .setNegativeButton("DISMISS") { dialog, _ ->
@@ -76,13 +66,9 @@ class SchoolsFragment : Fragment() {
                         .create()
                         .show()
                 }
-                else ->  {
-                    Log.d(TAG, "onCreateView: Not contemplated")
-                }
             }
         }
 
-        schoolsViewModel.getAllSchools()
 
         return binding.root
     }

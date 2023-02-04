@@ -1,8 +1,11 @@
 package com.example.firstnetworkapi.model
 
 
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class SatScoresItem(
     @SerializedName("dbn")
     val dbn: String = "",
